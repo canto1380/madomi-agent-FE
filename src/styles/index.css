@@ -1,0 +1,7 @@
+@import './global.css';
+@import './layout/header.css';
+@import './layout/footer.css';
+@import './sections/hero.css';
+@import './sections/historia.css';
+@import './sections/productos.css';
+@import './sections/contacto.css';

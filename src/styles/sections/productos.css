@@ -1,0 +1,392 @@
+/* sections/productos.css — clases camelCase */
+
+.productos .sectionHeader {
+  margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.productos .sectionTitle {
+  letter-spacing: -0.02em;
+}
+
+.productos .sectionSubtitle {
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  max-width: 52ch;
+  margin-inline: auto;
+}
+
+/* ── Lo último — novedades elegantes ── */
+.loUltimo {
+  margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(1.35rem, 2.5vw, 1.75rem);
+  border-radius: var(--radius-xl);
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--color-fondo) 94%, white) 0%,
+      color-mix(in srgb, var(--color-fondo-alt) 55%, white) 100%
+    );
+  border: 1px solid color-mix(in srgb, var(--color-borde) 85%, white);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    var(--shadow);
+  position: relative;
+}
+
+.loUltimoHeader {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.loUltimoHeaderMain {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.75rem;
+}
+
+.loUltimoEyebrow {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-primario);
+}
+
+.loUltimoTitulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 700;
+  color: var(--color-texto);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.loUltimoSubtitulo {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 100%;
+  font-size: 0.9rem;
+  color: var(--color-texto-claro);
+  line-height: 1.55;
+  margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .loUltimoSubtitulo {
+    flex: 1 1 auto;
+    text-align: right;
+    max-width: 36ch;
+  }
+}
+
+.loUltimoGrid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.15rem;
+}
+
+@media (min-width: 640px) {
+  .loUltimoGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.15rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .loUltimoGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+.loUltimoGrid .productoCardDestacado {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 70%, transparent);
+}
+
+.loUltimoGrid .productoCardDestacado .productoCardImagen {
+  aspect-ratio: 5 / 4;
+  min-height: 168px;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .loUltimoGrid .productoCardDestacado .productoCardImagen {
+    min-height: 188px;
+  }
+}
+
+@media (min-width: 960px) {
+  .loUltimoGrid .productoCardDestacado .productoCardImagen {
+    aspect-ratio: 4 / 3;
+    min-height: 200px;
+  }
+}
+
+.loUltimoGrid .productoCardDestacado .productoCardBody {
+  padding: 1rem 1.1rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+}
+
+.loUltimoGrid .productoCardDestacado .productoCardNombre {
+  font-size: 1.02rem;
+}
+
+.loUltimoGrid .productoCardDestacado .productoCardDesc {
+  font-size: 0.82rem;
+  margin-top: 0.35rem;
+}
+
+.loUltimoGrid .productoCardDestacado .productoCardCategoria {
+  font-size: 0.65rem;
+  margin-bottom: 0.4rem;
+  padding: 0.22rem 0.55rem;
+  background: color-mix(in srgb, var(--color-secundario) 10%, transparent);
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.loUltimoGrid .productoCardBadge {
+  top: 0.65rem;
+  right: 0.65rem;
+  font-size: 0.62rem;
+  padding: 0.25rem 0.55rem;
+  background: var(--color-primario);
+  color: white;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ── Catálogo por categoría ── */
+.productosCategorias {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.productosCatalogoHeader {
+  text-align: center;
+  margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.productosCatalogoEyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-secundario);
+  margin-bottom: 0.5rem;
+}
+
+.productosCatalogoTitulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--color-texto);
+  letter-spacing: -0.015em;
+}
+
+.productosGrupoHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-borde) 80%, transparent);
+}
+
+.productosGrupoTitulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.55rem);
+  font-weight: 700;
+  color: var(--color-texto);
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-bottom: 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.productosGrupoTitulo::after {
+  display: none;
+}
+
+.productosGrupoCount {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-texto-claro);
+  background: white;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 90%, transparent);
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+}
+
+.productosGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.35rem;
+}
+
+.productoCard {
+  position: relative;
+  background: white;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid color-mix(in srgb, var(--color-borde) 65%, transparent);
+  animation: cardIn 0.6s var(--ease-out-expo) both;
+  animation-delay: var(--stagger, 0ms);
+}
+
+.productoCardDestacado {
+  border-color: color-mix(in srgb, var(--color-acento) 28%, transparent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.productoCardDestacado .productoCardImagen {
+  aspect-ratio: 5 / 4;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-fondo-alt) 70%, white),
+    color-mix(in srgb, var(--color-acento) 28%, transparent)
+  );
+}
+
+.productoCardDestacado .productoCardBody {
+  padding: 1rem 1.1rem;
+}
+
+.productoCardDestacado .productoCardNombre {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+}
+
+.productoCardBadge {
+  position: absolute;
+  top: 0.85rem;
+  right: 0.85rem;
+  z-index: 3;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-fondo-oscuro);
+  background: var(--color-acento);
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: perspective(var(--perspective)) rotateX(8deg) translateY(16px);
+  }
+}
+
+.productoCardShine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.25) 0%,
+    transparent 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity var(--duration-normal);
+}
+
+.productoCard:hover .productoCardShine {
+  opacity: 1;
+}
+
+.productoCardImagen {
+  aspect-ratio: 4 / 3;
+  background: linear-gradient(
+    135deg,
+    var(--color-fondo-alt),
+    color-mix(in srgb, var(--color-acento) 18%, transparent)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transform: translateZ(12px);
+}
+
+.productoCardImagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.productoCard:hover .productoCardImagen img {
+  transform: scale(1.06);
+}
+
+.productoCardPlaceholder {
+  font-family: var(--font-display);
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  opacity: 0.35;
+}
+
+.productoCardBody {
+  padding: 1.35rem 1.25rem 1.4rem;
+  transform: translateZ(8px);
+}
+
+.productoCardCategoria {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-secundario);
+  background: color-mix(in srgb, var(--color-secundario) 10%, transparent);
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  margin-bottom: 0.65rem;
+}
+
+.productoCardNombre {
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  font-weight: 700;
+  color: var(--color-texto);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.productoCardDesc {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-texto-claro);
+  margin-top: 0.45rem;
+  letter-spacing: 0.01em;
+}

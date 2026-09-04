@@ -1,0 +1,295 @@
+/* sections/historia.css — clases camelCase */
+
+.historiaSlider {
+  width: 100%;
+}
+
+.historiaSliderLayout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.25rem;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid color-mix(in srgb, var(--color-borde) 70%, transparent);
+  overflow: hidden;
+}
+
+@media (min-width: 900px) {
+  .historiaSliderLayout {
+    grid-template-columns: 1fr 1fr;
+    min-height: 380px;
+  }
+}
+
+.historiaSliderContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 1.25rem 1.25rem;
+  min-height: 280px;
+}
+
+@media (min-width: 900px) {
+  .historiaSliderContent {
+    padding: 2rem 1.75rem 1.5rem;
+  }
+}
+
+.historiaSliderControls {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  gap: 0.35rem;
+  z-index: 2;
+}
+
+@media (min-width: 900px) {
+  .historiaSliderControls {
+    top: 1.25rem;
+    right: 1.25rem;
+  }
+}
+
+.historiaSliderArrow {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 50%;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast),
+    border-color var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.historiaSliderArrow:hover {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: white;
+  transform: scale(1.05);
+}
+
+.historiaSliderViewport {
+  flex: 1;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.historiaSliderTrack {
+  display: flex;
+  transition: transform var(--duration-slow) var(--ease-out-expo);
+}
+
+.historiaSlide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-right: 0.5rem;
+}
+
+.historiaSlideTitulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.6rem);
+  font-weight: 700;
+  color: var(--color-texto);
+  line-height: 1.25;
+  padding-right: 5rem;
+}
+
+.historiaSlideTexto {
+  color: var(--color-texto-claro);
+  font-size: 0.98rem;
+  line-height: 1.75;
+  flex: 1;
+}
+
+.historiaSliderDots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding-top: 0.25rem;
+}
+
+.historiaSliderDot {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: var(--color-borde);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.historiaSliderDotActive {
+  background: var(--color-primario);
+  transform: scale(1.15);
+}
+
+.historiaSliderDot:hover:not(.historiaSliderDotActive) {
+  background: color-mix(in srgb, var(--color-primario) 40%, var(--color-borde));
+}
+
+.historiaSliderMedia {
+  background: var(--color-fondo-oscuro);
+  min-height: 220px;
+}
+
+@media (min-width: 900px) {
+  .historiaSliderMedia {
+    min-height: 100%;
+  }
+}
+
+.historiaSliderMedia .historiaVideo {
+  height: 100%;
+  min-height: 220px;
+  max-height: none;
+  margin: 0;
+  border-radius: 0;
+  border: none;
+  box-shadow: none;
+  aspect-ratio: auto;
+}
+
+.historiaSliderMedia .historiaVideoPlayer {
+  min-height: 220px;
+  object-fit: cover;
+}
+
+@media (min-width: 900px) {
+  .historiaSliderMedia .historiaVideoPlayer {
+    min-height: 380px;
+  }
+}
+
+.historiaVideo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: min(56vh, 520px);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--color-fondo-oscuro);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid color-mix(in srgb, var(--color-borde) 50%, transparent);
+}
+
+.historiaVideoPlayer {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out-expo);
+}
+
+.historiaVideoPlayerVisible {
+  opacity: 1;
+}
+
+.historiaVideoOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-fondo-oscuro) 92%, var(--color-primario)) 0%,
+    var(--color-fondo-oscuro) 100%
+  );
+  text-align: center;
+}
+
+.historiaVideoOverlayError {
+  background: color-mix(in srgb, var(--color-fondo-oscuro) 95%, var(--color-error));
+}
+
+.historiaVideoStatus {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 28ch;
+  line-height: 1.5;
+}
+
+.historiaVideoRetry {
+  padding: 0.6rem 1.25rem;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: white;
+  background: var(--color-primario);
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--duration-fast);
+}
+
+.historiaVideoRetry:hover {
+  background: var(--color-primario-oscuro);
+}
+
+.historiaStats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.historiaStat {
+  background: var(--color-fondo);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 60%, transparent);
+  transition:
+    border-color var(--duration-fast),
+    transform var(--duration-fast) var(--ease-spring);
+}
+
+.historiaStat:hover {
+  border-color: color-mix(in srgb, var(--color-primario) 30%, transparent);
+  transform: translateY(-2px);
+}
+
+.historiaStatValor {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 700;
+  color: var(--color-primario);
+  margin-bottom: 0.35rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.historiaStat:hover .historiaStatValor {
+  transform: scale(1.04);
+}
+
+.historiaStatEtiqueta {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-texto-claro);
+  line-height: 1.35;
+}

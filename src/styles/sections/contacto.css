@@ -1,0 +1,153 @@
+/* sections/contacto.css — clases camelCase */
+
+.contactoPanel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 80%, transparent);
+}
+
+@media (min-width: 768px) {
+  .contactoPanel {
+    grid-template-columns: minmax(280px, 1fr) 1.25fr;
+    min-height: 280px;
+  }
+}
+
+.contactoDatos {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .contactoDatos {
+    padding: 1.5rem;
+  }
+}
+
+.contactoTiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  list-style: none;
+}
+
+@media (min-width: 480px) {
+  .contactoTiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .contactoTiles {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+}
+
+.contactoTile {
+  padding: 0.75rem 0.9rem;
+  background: var(--color-fondo);
+  border-radius: var(--radius);
+  border: 1px solid color-mix(in srgb, var(--color-borde) 60%, transparent);
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+
+.contactoTile:hover {
+  border-color: color-mix(in srgb, var(--color-primario) 25%, transparent);
+  box-shadow: 0 4px 16px rgba(28, 25, 23, 0.05);
+}
+
+.contactoTileLabel {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-primario);
+  margin-bottom: 0.3rem;
+}
+
+.contactoTileValor {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-texto);
+  line-height: 1.45;
+  margin: 0;
+}
+
+a.contactoTileValor:hover {
+  color: var(--color-primario);
+}
+
+.contactoTileDetalle {
+  font-size: 0.75rem;
+  color: var(--color-texto-claro);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.contactoWhatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #25d366;
+  color: white !important;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: var(--radius);
+  transition:
+    background var(--duration-fast),
+    transform var(--duration-fast) var(--ease-spring),
+    box-shadow var(--duration-fast);
+}
+
+.contactoWhatsapp:hover {
+  background: #1da851;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.32);
+}
+
+.contactoMapa {
+  min-height: 220px;
+  background: var(--color-fondo-alt);
+}
+
+@media (min-width: 768px) {
+  .contactoMapa {
+    min-height: 100%;
+  }
+}
+
+.contactoMapa iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  border: 0;
+  display: block;
+  filter: grayscale(15%) contrast(1.04);
+  transition: filter var(--duration-normal);
+}
+
+@media (min-width: 768px) {
+  .contactoMapa iframe {
+    min-height: 280px;
+  }
+}
+
+.contactoMapa:hover iframe {
+  filter: grayscale(0%) contrast(1);
+}
