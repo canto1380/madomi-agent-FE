@@ -38,6 +38,9 @@ export function HistoriaVideo() {
         controls
         preload="metadata"
         playsInline
+        autoPlay
+        muted
+        loop
         onLoadedData={() => setStatus('ready')}
         onCanPlay={() => setStatus((prev) => (prev === 'error' ? prev : 'ready'))}
         onError={() => setStatus('error')}

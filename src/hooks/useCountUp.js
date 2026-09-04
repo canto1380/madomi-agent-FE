@@ -80,3 +80,9 @@ export function formatStatCount(count, useLocale) {
   }
   return String(count);
 }
+
+/** Texto final de una métrica (ej. "30+", "15.000+") para reservar espacio en layout. */
+export function formatStatValor(valor) {
+  const { target, suffix, useLocale } = parseStatValor(valor);
+  return `${formatStatCount(target, useLocale)}${suffix}`;
+}

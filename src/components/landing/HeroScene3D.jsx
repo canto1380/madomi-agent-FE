@@ -17,6 +17,9 @@ const PASTA_SHAPES = [
   { type: 'capsule', position: [2.8, 2.1, -2.5], scale: 0.3, color: BRAND.primario, speed: 1.8 },
   { type: 'sphere', position: [-3.8, -0.4, -4], scale: 0.28, color: BRAND.acento, speed: 2 },
   { type: 'sphere', position: [3.6, 0.9, -3.5], scale: 0.22, color: BRAND.secundario, speed: 1.5 },
+  { type: 'capsule', position: [6.8, 2.1, -2.5], scale: 0.3, color: BRAND.primario, speed: 1.8 },
+  { type: 'sphere', position: [-1.8, -3.4, -4], scale: 0.28, color: BRAND.acento, speed: 2 },
+  { type: 'sphere', position: [1.6, -3.9, -3.5], scale: 0.22, color: BRAND.secundario, speed: 1.5 },
 ];
 
 function PastaMesh({ type, color, scale }) {
@@ -53,10 +56,16 @@ function Logo3D() {
   const texture = useTexture('/logo-madomi-blanco.png');
   const groupRef = useRef();
 
+  useMemo(() => {
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.premultiplyAlpha = true;
+    texture.needsUpdate = true;
+  }, [texture]);
+
   const { width, height } = useMemo(() => {
     const img = texture.image;
     const aspect = img?.width && img?.height ? img.width / img.height : 2;
-    const w = 4.2;
+    const w = 5.2;
     return { width: w, height: w / aspect };
   }, [texture]);
 
@@ -65,29 +74,26 @@ function Logo3D() {
     const t = state.clock.elapsedTime;
     groupRef.current.rotation.y = THREE.MathUtils.lerp(
       groupRef.current.rotation.y,
-      state.pointer.x * 0.35 + Math.sin(t * 0.4) * 0.08,
+      state.pointer.x * 0.75 + Math.sin(t * 0.4) * 0.38,
       0.06,
     );
     groupRef.current.rotation.x = THREE.MathUtils.lerp(
       groupRef.current.rotation.x,
-      -state.pointer.y * 0.2 + Math.cos(t * 0.35) * 0.05,
-      0.06,
+      -state.pointer.y * 0.55 + Math.cos(t * 0.35) * 0.15,
+      0.16,
     );
     groupRef.current.position.y = Math.sin(t * 0.8) * 0.12;
   });
 
   return (
     <group ref={groupRef}>
-      <mesh position={[0, 0, -0.05]}>
-        <planeGeometry args={[width * 1.02, height * 1.02]} />
-        <meshStandardMaterial color="#000000" transparent opacity={0.25} />
-      </mesh>
       <mesh>
         <planeGeometry args={[width, height]} />
-        <meshStandardMaterial
+        <meshBasicMaterial
           map={texture}
           transparent
-          alphaTest={0.05}
+          alphaTest={0.08}
+          depthWrite={false}
           toneMapped={false}
           side={THREE.DoubleSide}
         />

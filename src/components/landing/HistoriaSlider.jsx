@@ -93,14 +93,14 @@ export function HistoriaSlider() {
                     <p className="historiaSlideTexto">{historia.parrafos[slide.parrafoIndex]}</p>
 
                     <div className="historiaStats">
-                      {index === activeIndex &&
-                        metrics.map((stat) => (
-                          <HistoriaMetric
-                            key={`${slide.id}-${stat.etiqueta}`}
-                            valor={stat.valor}
-                            etiqueta={stat.etiqueta}
-                          />
-                        ))}
+                      {metrics.map((stat) => (
+                        <HistoriaMetric
+                          key={`${slide.id}-${stat.etiqueta}`}
+                          valor={stat.valor}
+                          etiqueta={stat.etiqueta}
+                          animate={index === activeIndex}
+                        />
+                      ))}
                     </div>
                   </article>
                 );

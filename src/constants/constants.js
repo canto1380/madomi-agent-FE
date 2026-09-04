@@ -14,7 +14,7 @@ export const APP_CONSTANTS = {
     colorPrimarioOscuro: '#991b1b',
     colorSecundario: '#365314',
     colorAcento: '#ca8a04',
-    colorFondo: '#fffbf5',
+    colorFondo: '#fafafa',
     colorFondoOscuro: '#1c1917',
     colorTexto: '#292524',
     colorTextoClaro: '#78716c',
