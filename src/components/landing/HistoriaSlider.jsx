@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { APP_CONSTANTS } from '../../constants/constants.js';
+import { useCallback, useRef, useState } from 'react';
+import { useSiteContenido } from '../../providers/SiteContenidoProvider.jsx';
 import { HistoriaMetric } from './HistoriaMetric.jsx';
 import { HistoriaVideo } from './HistoriaVideo.jsx';
 
@@ -18,6 +18,8 @@ const SLIDES = [
   },
 ];
 
+const SWIPE_THRESHOLD = 48;
+
 function resolveStats(stats, etiquetas) {
   return etiquetas
     .map((etiqueta) => stats.find((stat) => stat.etiqueta === etiqueta))
@@ -25,9 +27,14 @@ function resolveStats(stats, etiquetas) {
 }
 
 export function HistoriaSlider() {
-  const { historia } = APP_CONSTANTS;
+  const { site } = useSiteContenido();
+  const { historia } = site;
   const [activeIndex, setActiveIndex] = useState(0);
+  const touchStartX = useRef(null);
+  const carouselRef = useRef(null);
   const total = SLIDES.length;
+  const activeSlide = SLIDES[activeIndex];
+  const slideOffsetPercent = (100 / total) * activeIndex;
 
   const goTo = useCallback(
     (index) => {
@@ -39,18 +46,57 @@ export function HistoriaSlider() {
   const goPrev = useCallback(() => goTo(activeIndex - 1), [activeIndex, goTo]);
   const goNext = useCallback(() => goTo(activeIndex + 1), [activeIndex, goTo]);
 
-  useEffect(() => {
-    const onKeyDown = (event) => {
-      if (event.key === 'ArrowLeft') goPrev();
-      if (event.key === 'ArrowRight') goNext();
-    };
+  const onCarouselKeyDown = useCallback(
+    (event) => {
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        goPrev();
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        goNext();
+      }
+      if (event.key === 'Home') {
+        event.preventDefault();
+        goTo(0);
+      }
+      if (event.key === 'End') {
+        event.preventDefault();
+        goTo(total - 1);
+      }
+    },
+    [goPrev, goNext, goTo, total],
+  );
 
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [goPrev, goNext]);
+  const onTouchStart = (event) => {
+    touchStartX.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const onTouchEnd = (event) => {
+    if (touchStartX.current === null) return;
+
+    const deltaX = touchStartX.current - (event.changedTouches[0]?.clientX ?? touchStartX.current);
+    touchStartX.current = null;
+
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return;
+    if (deltaX > 0) goNext();
+    else goPrev();
+  };
 
   return (
-    <div className="historiaSlider" aria-roledescription="carousel">
+    <div
+      ref={carouselRef}
+      className="historiaSlider"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Historia de Madomi"
+      tabIndex={0}
+      onKeyDown={onCarouselKeyDown}
+    >
+      <p className="visuallyHidden" aria-live="polite" aria-atomic="true">
+        {activeSlide.titulo} — slide {activeIndex + 1} de {total}
+      </p>
+
       <div className="historiaSliderLayout">
         <div className="historiaSliderContent">
           <div className="historiaSliderControls">
@@ -72,25 +118,36 @@ export function HistoriaSlider() {
             </button>
           </div>
 
-          <div className="historiaSliderViewport">
+          <div
+            className="historiaSliderViewport"
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
             <div
               className="historiaSliderTrack"
-              style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+              style={{
+                '--slide-count': total,
+                transform: `translateX(-${slideOffsetPercent}%)`,
+              }}
+              aria-live="off"
             >
               {SLIDES.map((slide, index) => {
                 const metrics = resolveStats(historia.stats, slide.metricEtiquetas);
+                const isActive = index === activeIndex;
 
                 return (
                   <article
                     key={slide.id}
+                    id={`historia-slide-${slide.id}`}
                     className="historiaSlide"
-                    aria-hidden={index !== activeIndex}
-                    aria-labelledby={`historia-slide-title-${slide.id}`}
+                    role="group"
+                    aria-roledescription="slide"
+                    aria-label={`${index + 1} de ${total}`}
+                    aria-hidden={!isActive}
                   >
                     <h3 id={`historia-slide-title-${slide.id}`} className="historiaSlideTitulo">
                       {slide.titulo}
                     </h3>
-                    <p className="historiaSlideTexto">{historia.parrafos[slide.parrafoIndex]}</p>
 
                     <div className="historiaStats">
                       {metrics.map((stat) => (
@@ -98,28 +155,34 @@ export function HistoriaSlider() {
                           key={`${slide.id}-${stat.etiqueta}`}
                           valor={stat.valor}
                           etiqueta={stat.etiqueta}
-                          animate={index === activeIndex}
+                          animate={isActive}
                         />
                       ))}
                     </div>
+
+                    <p className="historiaSlideTexto">{historia.parrafos[slide.parrafoIndex]}</p>
                   </article>
                 );
               })}
             </div>
           </div>
 
-          <div className="historiaSliderDots" role="tablist" aria-label="Slides de historia">
-            {SLIDES.map((slide, index) => (
-              <button
-                key={slide.id}
-                type="button"
-                role="tab"
-                className={`historiaSliderDot ${index === activeIndex ? 'historiaSliderDotActive' : ''}`}
-                aria-selected={index === activeIndex}
-                aria-label={`${slide.titulo} (${index + 1} de ${total})`}
-                onClick={() => goTo(index)}
-              />
-            ))}
+          <div className="historiaSliderDots" aria-label="Ir a un slide">
+            {SLIDES.map((slide, index) => {
+              const isActive = index === activeIndex;
+
+              return (
+                <button
+                  key={slide.id}
+                  type="button"
+                  className={`historiaSliderDot ${isActive ? 'historiaSliderDotActive' : ''}`}
+                  aria-label={`${slide.titulo} (${index + 1} de ${total})`}
+                  aria-controls={`historia-slide-${slide.id}`}
+                  aria-current={isActive ? 'true' : undefined}
+                  onClick={() => goTo(index)}
+                />
+              );
+            })}
           </div>
         </div>
 

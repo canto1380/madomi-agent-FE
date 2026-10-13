@@ -14,7 +14,7 @@ export async function apiRequest(path, options = {}) {
   if (!res.ok) {
     const error = new Error(body.message || body.error || 'Error de servidor');
     error.status = res.status;
-    error.code = body.error;
+    error.code = body.error ?? body.code;
     throw error;
   }
 

@@ -1,6 +1,8 @@
 @import './global.css';
 @import './layout/header.css';
 @import './layout/footer.css';
+@import './layout/whatsappFloat.css';
+@import './layout/chatWidget.css';
 @import './sections/hero.css';
 @import './sections/historia.css';
 @import './sections/productos.css';

@@ -1,13 +1,29 @@
 /* sections/historia.css — clases camelCase */
 
+.historia {
+  overflow-x: clip;
+  max-width: 100%;
+}
+
 .historiaSlider {
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  outline: none;
+}
+
+.historiaSlider:focus-visible {
+  outline: 2px solid var(--color-primario);
+  outline-offset: 4px;
+  border-radius: var(--radius);
 }
 
 .historiaSliderLayout {
   display: grid;
-  grid-template-columns: 4fr 6fr;
+  grid-template-columns: 1fr;
   gap: 0;
+  width: 100%;
+  max-width: 100%;
   background: white;
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-lg);
@@ -17,8 +33,9 @@
 
 @media (min-width: 900px) {
   .historiaSliderLayout {
-    grid-template-columns: 4fr 6fr;
-    min-height: 380px;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    min-height: 420px;
   }
 }
 
@@ -26,12 +43,15 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem 1.25rem 1.25rem;
+  width: 100%;
+  min-width: 0;
   min-height: 280px;
+  padding: 1.5rem 1.25rem 1.25rem;
 }
 
 @media (min-width: 900px) {
   .historiaSliderContent {
+    height: 100%;
     padding: 1.75rem 1.5rem 1.35rem;
   }
 }
@@ -53,8 +73,8 @@
 }
 
 .historiaSliderArrow {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,53 +101,62 @@
 
 .historiaSliderViewport {
   flex: 1;
+  width: 100%;
+  min-width: 0;
   overflow: hidden;
   margin-top: 0.5rem;
-  min-height: 220px;
+  touch-action: pan-y pinch-zoom;
 }
 
 .historiaSliderTrack {
   display: flex;
-  align-items: stretch;
+  width: calc(100% * var(--slide-count, 2));
   transition: transform var(--duration-slow) var(--ease-out-expo);
+  will-change: transform;
 }
 
 .historiaSlide {
-  flex: 0 0 100%;
-  min-width: 100%;
+  flex: 0 0 calc(100% / var(--slide-count, 2));
+  min-width: calc(100% / var(--slide-count, 2));
+  max-width: calc(100% / var(--slide-count, 2));
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding-right: 0.5rem;
-  min-height: 100%;
+  gap: 0.85rem;
+  padding-right: 0.25rem;
 }
 
 .historiaSlideTitulo {
+  flex-shrink: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+  font-size: clamp(1.15rem, 4vw, 1.5rem);
   font-weight: 700;
   color: var(--color-texto);
   line-height: 1.25;
-  padding-right: 4.25rem;
+  padding-right: 5.5rem;
 }
 
 .historiaSlideTexto {
-  color: var(--color-texto-claro);
-  font-size: 0.98rem;
-  line-height: 1.75;
   flex: 1;
+  color: var(--color-texto-claro);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .historiaSliderDots {
+  flex-shrink: 0;
   display: flex;
   gap: 0.5rem;
-  margin-top: 1.25rem;
+  margin-top: 1rem;
   padding-top: 0.25rem;
 }
 
 .historiaSliderDot {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   padding: 0;
   border: none;
   border-radius: 50%;
@@ -148,6 +177,9 @@
 }
 
 .historiaSliderMedia {
+  display: flex;
+  width: 100%;
+  min-width: 0;
   background: var(--color-fondo-oscuro);
   min-height: 220px;
 }
@@ -155,10 +187,14 @@
 @media (min-width: 900px) {
   .historiaSliderMedia {
     min-height: 100%;
+    height: 100%;
   }
 }
 
 .historiaSliderMedia .historiaVideo {
+  position: relative;
+  flex: 1;
+  width: 100%;
   height: 100%;
   min-height: 220px;
   max-height: none;
@@ -170,14 +206,12 @@
 }
 
 .historiaSliderMedia .historiaVideoPlayer {
-  min-height: 220px;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
   object-fit: cover;
-}
-
-@media (min-width: 900px) {
-  .historiaSliderMedia .historiaVideoPlayer {
-    min-height: 380px;
-  }
 }
 
 .historiaVideo {
@@ -194,7 +228,7 @@
 
 .historiaVideoPlayer {
   width: 100%;
-  height: 100px;
+  height: 100%;
   object-fit: cover;
   display: block;
   opacity: 0;
@@ -252,18 +286,20 @@
 }
 
 .historiaStats {
+  flex-shrink: 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  margin-top: auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
   min-height: 6.75rem;
   align-items: stretch;
+  width: 100%;
+  min-width: 0;
 }
 
 .historiaStat {
   background: var(--color-fondo);
   border-radius: var(--radius-lg);
-  padding: 1.25rem 1rem;
+  padding: 1rem 0.65rem;
   text-align: center;
   border: 1px solid color-mix(in srgb, var(--color-borde) 60%, transparent);
   transition:
@@ -273,6 +309,17 @@
   flex-direction: column;
   justify-content: center;
   min-height: 6.75rem;
+  min-width: 0;
+}
+
+@media (min-width: 480px) {
+  .historiaStats {
+    gap: 0.75rem;
+  }
+
+  .historiaStat {
+    padding: 1.25rem 1rem;
+  }
 }
 
 .historiaStat:hover {
@@ -285,7 +332,7 @@
   place-items: center;
   width: 100%;
   font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-size: clamp(1.5rem, 5vw, 2.35rem);
   font-weight: 700;
   color: var(--color-primario);
   margin-bottom: 0.35rem;
@@ -313,8 +360,15 @@
 }
 
 .historiaStatEtiqueta {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--color-texto-claro);
   line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 480px) {
+  .historiaStatEtiqueta {
+    font-size: 0.78rem;
+  }
 }

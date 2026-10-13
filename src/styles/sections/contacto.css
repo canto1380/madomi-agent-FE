@@ -77,8 +77,17 @@
   margin-bottom: 0.3rem;
 }
 
+.contactoTileValorRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
 .contactoTileValor {
   display: block;
+  flex: 1;
+  min-width: 0;
   font-size: 0.88rem;
   font-weight: 600;
   color: var(--color-texto);
@@ -88,6 +97,36 @@
 
 a.contactoTileValor:hover {
   color: var(--color-primario);
+}
+
+.contactoCopyBtn {
+  flex-shrink: 0;
+  padding: 0.28rem 0.55rem;
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-texto-claro);
+  background: white;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 85%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast),
+    border-color var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.contactoCopyBtn:hover {
+  color: var(--color-primario);
+  border-color: color-mix(in srgb, var(--color-primario) 30%, var(--color-borde));
+}
+
+.contactoCopyBtnDone {
+  color: var(--color-exito);
+  border-color: color-mix(in srgb, var(--color-exito) 35%, var(--color-borde));
+  background: color-mix(in srgb, var(--color-exito) 8%, white);
 }
 
 .contactoTileDetalle {
@@ -123,12 +162,14 @@ a.contactoTileValor:hover {
 
 .contactoMapa {
   min-height: 220px;
+  overflow: hidden;
   background: var(--color-fondo-alt);
 }
 
 @media (min-width: 768px) {
   .contactoMapa {
     min-height: 100%;
+    height: 100%;
   }
 }
 

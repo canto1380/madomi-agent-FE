@@ -204,6 +204,138 @@
   letter-spacing: -0.015em;
 }
 
+.productosFiltroSticky {
+  position: sticky;
+  top: var(--header-height);
+  z-index: 30;
+  margin-bottom: clamp(1rem, 2vw, 1.35rem);
+  margin-inline: calc(-1 * var(--container-padding));
+  padding: 0.75rem var(--container-padding) 0.85rem;
+  background: color-mix(in srgb, var(--color-fondo-alt) 92%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-borde) 75%, transparent);
+  box-shadow: 0 8px 24px rgba(28, 25, 23, 0.04);
+}
+
+.productosFiltro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 0;
+}
+
+.productosResultados {
+  scroll-margin-top: calc(var(--header-height) + 5.5rem);
+}
+
+.productosFiltroBusqueda {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  margin-inline: auto;
+}
+
+.productosFiltroInput {
+  width: 100%;
+  padding: 0.72rem 1rem 0.72rem 2.5rem;
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--color-texto);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2378716c' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E")
+    no-repeat 0.85rem center,
+    white;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 90%, transparent);
+  border-radius: 999px;
+  transition:
+    border-color var(--duration-fast),
+    box-shadow var(--duration-fast);
+}
+
+.productosFiltroInput:focus-visible {
+  outline: none;
+  border-color: color-mix(in srgb, var(--color-primario) 45%, var(--color-borde));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primario) 18%, transparent);
+}
+
+.productosFiltroCategorias {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+@media (max-width: 639px) {
+  .productosFiltroCategorias {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    margin-inline: calc(-1 * var(--container-padding));
+    padding-inline: var(--container-padding);
+    scrollbar-width: thin;
+  }
+}
+
+.productosFiltroChip {
+  flex-shrink: 0;
+  padding: 0.42rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-texto-claro);
+  background: white;
+  border: 1px solid color-mix(in srgb, var(--color-borde) 90%, transparent);
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast),
+    border-color var(--duration-fast),
+    transform var(--duration-fast);
+}
+
+.productosFiltroChip:hover {
+  border-color: color-mix(in srgb, var(--color-primario) 35%, var(--color-borde));
+  color: var(--color-texto);
+}
+
+.productosFiltroChipActive {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: white;
+}
+
+.productosFiltroChipActive:hover {
+  color: white;
+  background: var(--color-primario-oscuro);
+  border-color: var(--color-primario-oscuro);
+}
+
+.productosFiltroVacio {
+  margin-bottom: 1rem;
+}
+
+.productosFiltroLimpiar {
+  margin-top: 0.75rem;
+  padding: 0.55rem 1rem;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primario);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-primario) 35%, var(--color-borde));
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast),
+    color var(--duration-fast);
+}
+
+.productosFiltroLimpiar:hover {
+  background: color-mix(in srgb, var(--color-primario) 8%, transparent);
+}
+
 .productosGrupoHeader {
   display: flex;
   align-items: baseline;
@@ -244,8 +376,22 @@
 
 .productosGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1.35rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+@media (min-width: 640px) {
+  .productosGrid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.15rem;
+  }
+}
+
+@media (min-width: 960px) {
+  .productosGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.35rem;
+  }
 }
 
 .productoCard {
@@ -295,6 +441,11 @@
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.productoCardBadgeDestacado {
+  background: var(--color-primario);
+  color: #fff;
 }
 
 @keyframes cardIn {
@@ -359,6 +510,30 @@
 .productoCardBody {
   padding: 1.35rem 1.25rem 1.4rem;
   transform: translateZ(8px);
+}
+
+@media (max-width: 639px) {
+  .productoCardBody {
+    padding: 0.85rem 0.75rem 0.95rem;
+  }
+
+  .productoCardNombre {
+    font-size: 0.92rem;
+  }
+
+  .productoCardDesc {
+    font-size: 0.78rem;
+    margin-top: 0.3rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .productoCardCategoria {
+    font-size: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
 }
 
 .productoCardCategoria {

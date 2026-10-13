@@ -1,16 +1,22 @@
-import { APP_CONSTANTS } from '../../constants/constants.js';
+import { useMemo } from 'react';
+import { useSiteContenido } from '../../providers/SiteContenidoProvider.jsx';
 import { Logo } from '../ui/Logo.jsx';
-
-const footerNav = [
-  { href: '#inicio', label: APP_CONSTANTS.nav.inicio },
-  { href: '#historia', label: APP_CONSTANTS.nav.historia },
-  { href: '#productos', label: APP_CONSTANTS.nav.productos },
-  { href: '#contacto', label: APP_CONSTANTS.nav.contacto },
-];
+import { RedSocialIcon, etiquetaRedSocial } from '../ui/RedSocialIcon.jsx';
 
 export function Footer() {
-  const { nombreEmpresa, contacto, descripcion } = APP_CONSTANTS;
+  const { site } = useSiteContenido();
+  const { nombreEmpresa, contacto, descripcion, tagline, nav, redes, footer } = site;
   const anio = new Date().getFullYear();
+
+  const footerNav = useMemo(
+    () => [
+      { href: '#inicio', label: nav.inicio },
+      { href: '#historia', label: nav.historia },
+      { href: '#productos', label: nav.productos },
+      { href: '#contacto', label: nav.contacto },
+    ],
+    [nav],
+  );
 
   return (
     <footer className="footer">
@@ -19,12 +25,12 @@ export function Footer() {
       <div className="container footerGrid">
         <div className="footerBrand">
           <Logo variant="footer" />
-          <p className="footerTagline">{APP_CONSTANTS.tagline}</p>
+          <p className="footerTagline">{tagline}</p>
           <p className="footerDesc">{descripcion}</p>
         </div>
 
         <nav className="footerNav" aria-label="Pie de página">
-          <h3 className="footerHeading">Secciones</h3>
+          <h3 className="footerHeading">{footer.seccionesTitulo}</h3>
           <ul className="footerNavList">
             {footerNav.map((item) => (
               <li key={item.href}>
@@ -35,7 +41,7 @@ export function Footer() {
         </nav>
 
         <div className="footerContact">
-          <h3 className="footerHeading">Contacto</h3>
+          <h3 className="footerHeading">{footer.contactoTitulo}</h3>
           <ul className="footerContactList">
             <li>{contacto.direccion}</li>
             <li>
@@ -49,10 +55,30 @@ export function Footer() {
         </div>
 
         <div className="footerCta">
-          <h3 className="footerHeading">Escribinos</h3>
-          <p className="footerCtaText">Consultá por productos, distribución o pedidos.</p>
+          <h3 className="footerHeading">
+            {redes?.length ? footer.seguinosTitulo : footer.escribinosTitulo}
+          </h3>
+          {redes?.length > 0 ? (
+            <ul className="footerRedesList">
+              {redes.map((red) => (
+                <li key={red.id}>
+                  <a
+                    href={red.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={etiquetaRedSocial(red.plataforma)}
+                    title={etiquetaRedSocial(red.plataforma)}
+                  >
+                    <RedSocialIcon plataforma={red.plataforma} />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="footerCtaText">{footer.ctaTexto}</p>
+          )}
           <a href={contacto.whatsapp} className="footerWhatsapp" target="_blank" rel="noreferrer">
-            WhatsApp
+            {footer.whatsapp}
           </a>
         </div>
       </div>
@@ -60,9 +86,9 @@ export function Footer() {
       <div className="footerBottom">
         <div className="container footerBottomInner">
           <p>
-            © {anio} {nombreEmpresa}. Todos los derechos reservados.
+            © {anio} {nombreEmpresa}. {footer.copyright}
           </p>
-          <p className="footerLocation">San Miguel de Tucumán, Tucumán · Argentina</p>
+          <p className="footerLocation">{footer.ubicacion}</p>
         </div>
       </div>
     </footer>

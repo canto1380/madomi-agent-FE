@@ -83,6 +83,23 @@ export const APP_CONSTANTS = {
     productos: 'Productos',
     contacto: 'Contacto',
   },
+
+  loUltimo: {
+    titulo: 'Lo último',
+    subtitulo:
+      'Nuestros lanzamientos más recientes, elaborados con la misma frescura de siempre.',
+  },
+
+  footer: {
+    seccionesTitulo: 'Secciones',
+    contactoTitulo: 'Contacto',
+    seguinosTitulo: 'Seguinos',
+    escribinosTitulo: 'Escribinos',
+    ctaTexto: 'Consultá por productos, distribución o pedidos.',
+    whatsapp: 'WhatsApp',
+    ubicacion: 'San Miguel de Tucumán, Tucumán · Argentina',
+    copyright: 'Todos los derechos reservados.',
+  },
 };
 
 /**

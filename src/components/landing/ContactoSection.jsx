@@ -1,11 +1,13 @@
-import { APP_CONSTANTS } from '../../constants/constants.js';
+import { useSiteContenido } from '../../providers/SiteContenidoProvider.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
+import { ContactoCopyButton } from './ContactoCopyButton.jsx';
 
 const MAPA_EMBED =
   'https://maps.google.com/maps?q=Rivadavia+1891,+San+Miguel+de+Tucum%C3%A1n,+Tucum%C3%A1n&z=15&output=embed';
 
 export function ContactoSection() {
-  const { contactoSection, contacto } = APP_CONSTANTS;
+  const { site } = useSiteContenido();
+  const { contactoSection, contacto } = site;
 
   const items = [
     {
@@ -17,6 +19,7 @@ export function ContactoSection() {
       id: 'telefono',
       titulo: 'Teléfono',
       valor: contacto.telefono,
+      copyValue: contacto.telefono,
       href: `tel:${contacto.telefonoLink}`,
       detalle: contacto.horario,
     },
@@ -24,6 +27,7 @@ export function ContactoSection() {
       id: 'email',
       titulo: 'Email',
       valor: contacto.email,
+      copyValue: contacto.email,
       href: `mailto:${contacto.email}`,
     },
   ];
@@ -46,13 +50,22 @@ export function ContactoSection() {
                 {items.map((item) => (
                   <li key={item.id} className="contactoTile">
                     <span className="contactoTileLabel">{item.titulo}</span>
-                    {item.href ? (
-                      <a href={item.href} className="contactoTileValor">
-                        {item.valor}
-                      </a>
-                    ) : (
-                      <p className="contactoTileValor">{item.valor}</p>
-                    )}
+                    <div className="contactoTileValorRow">
+                      {item.href ? (
+                        <a href={item.href} className="contactoTileValor">
+                          {item.valor}
+                        </a>
+                      ) : (
+                        <p className="contactoTileValor">{item.valor}</p>
+                      )}
+                      {item.copyValue && (
+                        <ContactoCopyButton
+                          value={item.copyValue}
+                          copyKey={item.id}
+                          label={item.titulo.toLowerCase()}
+                        />
+                      )}
+                    </div>
                     {item.detalle && <p className="contactoTileDetalle">{item.detalle}</p>}
                   </li>
                 ))}

@@ -1,9 +1,10 @@
-import { APP_CONSTANTS } from '../../constants/constants.js';
+import { useSiteContenido } from '../../providers/SiteContenidoProvider.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
 import { HistoriaSlider } from './HistoriaSlider.jsx';
 
 export function HistoriaSection() {
-  const { historia } = APP_CONSTANTS;
+  const { site } = useSiteContenido();
+  const { historia } = site;
 
   return (
     <section id="historia" className="historia section">
@@ -12,9 +13,7 @@ export function HistoriaSection() {
           <div className="sectionHeader">
             <span className="sectionEyebrow">Desde 1993</span>
             <h2 className="sectionTitle">{historia.titulo}</h2>
-            <p className="sectionSubtitle">
-              Descubrí la trayectoria que nos llevó a ser la pasta de todos los tucumanos.
-            </p>
+            <p className="sectionSubtitle">{historia.subtitulo}</p>
           </div>
         </Reveal>
 

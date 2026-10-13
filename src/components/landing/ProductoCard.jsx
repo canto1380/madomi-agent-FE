@@ -1,13 +1,21 @@
 import { useTilt3D } from '../../hooks/useTilt3D.js';
 
-export function ProductoCard({ producto, style, variant = 'default' }) {
+export function ProductoCard({
+  producto,
+  style,
+  variant = 'default',
+  showDestacadoBadge = false,
+}) {
   const inicial = producto.nombre?.charAt(0) || '?';
-  const { ref, onMove, onLeave } = useTilt3D(variant === 'destacado' ? 6 : 8);
+  const esNuevo = variant === 'nuevo';
+  const esDestacado = showDestacadoBadge || producto.esDestacado;
+  const tiltGrados = esNuevo ? 6 : 8;
+  const { ref, onMove, onLeave } = useTilt3D(tiltGrados);
   const className = [
     'productoCard',
     'card3d',
     'card3dInteractive',
-    variant === 'destacado' && 'productoCardDestacado',
+    esNuevo && 'productoCardDestacado',
   ]
     .filter(Boolean)
     .join(' ');
@@ -20,9 +28,14 @@ export function ProductoCard({ producto, style, variant = 'default' }) {
       onMouseMove={onMove}
       onMouseLeave={onLeave}
     >
-      {variant === 'destacado' && (
+      {esNuevo && (
         <span className="productoCardBadge" aria-label="Producto nuevo">
           Nuevo
+        </span>
+      )}
+      {!esNuevo && esDestacado && (
+        <span className="productoCardBadge productoCardBadgeDestacado" aria-label="Producto destacado">
+          Destacado
         </span>
       )}
       <div className="productoCardShine" aria-hidden="true" />

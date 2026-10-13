@@ -49,6 +49,39 @@
     );
 }
 
+@media (max-width: 768px) {
+  .heroOverlay {
+    background: linear-gradient(
+      180deg,
+      rgba(28, 25, 23, 0.5) 0%,
+      rgba(28, 25, 23, 0.82) 38%,
+      rgba(28, 25, 23, 0.94) 72%,
+      rgba(28, 25, 23, 0.97) 100%
+    );
+  }
+
+  .heroLayoutSingle {
+    max-width: 100%;
+    margin-top: clamp(6rem, 22vh, 9rem);
+  }
+
+  .heroTitle {
+    font-size: clamp(1.85rem, 8vw, 2.5rem);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 899px) {
+  .heroOverlay {
+    background:
+      linear-gradient(
+        115deg,
+        rgba(28, 25, 23, 0.9) 0%,
+        rgba(28, 25, 23, 0.72) 48%,
+        rgba(28, 25, 23, 0.28) 100%
+      );
+  }
+}
+
 .heroGrain {
   position: absolute;
   inset: 0;
@@ -79,6 +112,14 @@
   bottom: 20%;
   left: 8%;
   background: color-mix(in srgb, var(--color-secundario) 30%, transparent);
+}
+
+.heroCanvasFallback .heroOrbCold {
+  width: 280px;
+  height: 280px;
+  top: 18%;
+  left: 42%;
+  background: color-mix(in srgb, #9ecad8 28%, transparent);
 }
 
 .heroLayout {
@@ -119,6 +160,35 @@
   margin-bottom: 1.5rem;
   letter-spacing: 0.04em;
   backdrop-filter: blur(8px);
+}
+
+.heroBadgeRotating {
+  display: inline-grid;
+  grid-template: 1fr / auto;
+  vertical-align: top;
+  min-width: min(100%, 22rem);
+}
+
+.heroBadgeLine {
+  grid-area: 1 / 1;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.55s var(--ease-out-expo),
+    transform 0.55s var(--ease-out-expo);
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.heroBadgeLineActive {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .heroBadgeLine {
+    white-space: normal;
+  }
 }
 
 .heroTitle {
@@ -166,20 +236,37 @@
   align-items: center;
 }
 
+.heroCtaPrimary {
+  min-width: 10.5rem;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.5rem;
+}
+
 .heroWhatsapp {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.45rem;
   padding: 0.8rem 1.25rem;
   background: #25d366;
   color: white !important;
   font-size: 0.9rem;
   font-weight: 700;
-  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   transition:
     background var(--duration-fast),
     transform var(--duration-fast) var(--ease-spring),
     box-shadow var(--duration-fast);
+}
+
+.heroWhatsappPill {
+  border-radius: 999px;
+}
+
+.heroWhatsappIcon {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
 }
 
 .heroWhatsapp:hover {
@@ -198,6 +285,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.45rem;
   opacity: 0.6;
   transition: opacity var(--duration-fast);
 }
@@ -206,11 +294,53 @@
   opacity: 1;
 }
 
+.heroScrollLabel {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
 .heroScrollLine {
   width: 1px;
   height: 48px;
   background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.8));
   animation: scrollLine 2s ease-in-out infinite;
+}
+
+@media (max-width: 768px) {
+  .heroScroll {
+    bottom: 1.15rem;
+    opacity: 1;
+  }
+
+  .heroScrollLabel {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .heroScrollLine {
+    width: 2px;
+    height: 56px;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.15),
+      rgba(255, 255, 255, 0.95)
+    );
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .heroCtaPrimary,
+  .heroWhatsapp {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 @keyframes scrollLine {

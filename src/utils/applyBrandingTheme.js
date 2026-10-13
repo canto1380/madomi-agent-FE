@@ -13,11 +13,12 @@ const BRANDING_VARS = {
   '--color-exito': 'colorExito',
 };
 
-export function applyBrandingTheme() {
+export function applyBrandingTheme(branding = APP_CONSTANTS.branding) {
   const root = document.documentElement;
-  const { branding } = APP_CONSTANTS;
 
   Object.entries(BRANDING_VARS).forEach(([cssVar, key]) => {
-    root.style.setProperty(cssVar, branding[key]);
+    if (branding?.[key]) {
+      root.style.setProperty(cssVar, branding[key]);
+    }
   });
 }

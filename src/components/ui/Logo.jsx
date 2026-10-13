@@ -1,4 +1,4 @@
-import { APP_CONSTANTS } from '../../constants/constants.js';
+import { useSiteContenido } from '../../providers/SiteContenidoProvider.jsx';
 
 const LOGO_VARIANTS = {
   header: 'logoHeader',
@@ -10,7 +10,8 @@ const LOGO_VARIANTS = {
  * Evita estiramiento forzando object-fit: contain.
  */
 export function Logo({ className = '', variant = 'header' }) {
-  const { branding } = APP_CONSTANTS;
+  const { site } = useSiteContenido();
+  const { branding } = site;
   const variantClass = LOGO_VARIANTS[variant] ?? LOGO_VARIANTS.header;
 
   return (

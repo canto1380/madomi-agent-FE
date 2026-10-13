@@ -1,4 +1,4 @@
-const CATEGORIA_ORDEN = [
+const FALLBACK_ORDEN = [
   'Capellettis',
   'Ravioles',
   'Sorrentinos',
@@ -17,7 +17,19 @@ const CATEGORIA_ORDEN = [
   'Humita',
 ];
 
-export function agruparPorCategoria(productos) {
+function resolverOrden(categoriasOrden = []) {
+  const mapa = new Map();
+
+  categoriasOrden.forEach((categoria, index) => {
+    if (categoria?.nombre) {
+      mapa.set(categoria.nombre, categoria.orden ?? index);
+    }
+  });
+
+  return mapa;
+}
+
+export function agruparPorCategoria(productos, categoriasOrden = []) {
   if (!productos?.length) return [];
 
   const grupos = productos.reduce((acc, producto) => {
@@ -27,9 +39,18 @@ export function agruparPorCategoria(productos) {
     return acc;
   }, {});
 
+  const ordenMap = resolverOrden(categoriasOrden);
+
   const categorias = Object.keys(grupos).sort((a, b) => {
-    const indexA = CATEGORIA_ORDEN.indexOf(a);
-    const indexB = CATEGORIA_ORDEN.indexOf(b);
+    const ordenA = ordenMap.get(a);
+    const ordenB = ordenMap.get(b);
+
+    if (ordenA !== undefined && ordenB !== undefined) return ordenA - ordenB;
+    if (ordenA !== undefined) return -1;
+    if (ordenB !== undefined) return 1;
+
+    const indexA = FALLBACK_ORDEN.indexOf(a);
+    const indexB = FALLBACK_ORDEN.indexOf(b);
     if (indexA === -1 && indexB === -1) return a.localeCompare(b, 'es');
     if (indexA === -1) return 1;
     if (indexB === -1) return -1;
