@@ -17,6 +17,7 @@ import {
   useReactivarMediaAdmin,
   useSubirArchivoMediaAdmin,
 } from '../../../hooks/admin/useMediaAdmin.js';
+import { notificarAdmin } from '../../../utils/admin/notificarAdmin.js';
 import { buildAdminListParams } from '../../../utils/admin/buildAdminApiParams.js';
 import { inferirCarpetaStorage } from '../../../utils/admin/storageFolders.js';
 import { getMediaUbicacion } from '../../../utils/admin/contentCatalog.js';
@@ -165,7 +166,9 @@ export default function MediaPage() {
       }
 
       if (!url) {
-        setErrorForm('Subí un archivo o ingresá una URL');
+        const mensaje = 'Subí un archivo o ingresá una URL';
+        setErrorForm(mensaje);
+        notificarAdmin({ type: 'error', message: mensaje });
         return;
       }
 

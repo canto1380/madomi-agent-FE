@@ -1,8 +1,16 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { MutationCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
-import { AppRoutes } from '../routes/AppRoutes.jsx';
+import { notificarResultadoMutacion } from '../utils/admin/notificarAdmin.js';
 
 const queryClient = new QueryClient({
+  mutationCache: new MutationCache({
+    onSuccess: (data, _variables, _context, mutation) => {
+      notificarResultadoMutacion({ data, meta: mutation.meta });
+    },
+    onError: (error, _variables, _context, mutation) => {
+      notificarResultadoMutacion({ error, meta: mutation.meta });
+    },
+  }),
   defaultOptions: {
     queries: {
       retry: 1,

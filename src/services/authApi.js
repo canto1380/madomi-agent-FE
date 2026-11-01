@@ -1,3 +1,5 @@
+import { asociarMensajeApi } from '../utils/apiMessage.js';
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const STORAGE_ACCESS = 'accessToken';
@@ -79,7 +81,7 @@ export async function apiRequest(path, options = {}, { retry = true, skipAuthRet
     throw error;
   }
 
-  return body.data;
+  return asociarMensajeApi(body.data, body.message);
 }
 
 export default apiRequest;

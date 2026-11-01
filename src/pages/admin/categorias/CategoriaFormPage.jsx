@@ -9,6 +9,7 @@ import {
   useCrearCategoriaAdmin,
   useActualizarCategoriaAdmin,
 } from '../../../hooks/admin/useCategoriasAdmin.js';
+import { notificarErroresCliente } from '../../../utils/admin/notificarAdmin.js';
 
 const estadoInicial = {
   nombre: '',
@@ -56,7 +57,9 @@ export default function CategoriaFormPage() {
     const nuevosErrores = {};
     if (!form.nombre.trim()) nuevosErrores.nombre = 'El nombre es obligatorio';
     setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+    const valido = Object.keys(nuevosErrores).length === 0;
+    if (!valido) notificarErroresCliente(nuevosErrores);
+    return valido;
   };
 
   const enviar = async (e) => {

@@ -67,6 +67,7 @@ export function useReactivarMediaAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => mediaAdminService.actualizarMedia(id, { activo: true }),
+    meta: { toastMessage: 'Media reactivado' },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: mediaAdminKeys.all });
       queryClient.invalidateQueries({ queryKey: ['admin', 'stats'] });

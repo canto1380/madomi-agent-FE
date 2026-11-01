@@ -23,7 +23,10 @@ function mensajeErrorUsuario(error) {
     return 'El asistente no está disponible en este momento. Podés escribirnos por WhatsApp.';
   }
   const msg = error?.message ?? '';
-  if (/network error|failed to fetch|load failed|incomplete/i.test(msg)) {
+  if (
+    error?.name === 'TimeoutError' ||
+    /network error|failed to fetch|load failed|incomplete|aborted|timeout/i.test(msg)
+  ) {
     return 'La respuesta tardó demasiado o se cortó la conexión. Esperá unos segundos e intentá de nuevo.';
   }
   return msg || 'No pudimos enviar tu mensaje. Intentá de nuevo.';
@@ -149,7 +152,11 @@ export function useChatWidget({ habilitado = true } = {}) {
         });
       } catch (err) {
         if (USAR_SSE) {
-          setMensajes((prev) => prev.filter((m) => m.id !== assistantId));
+          setMensajes((prev) =>
+            prev
+              .filter((m) => m.id !== assistantId)
+              .map((m) => (m.streaming ? { ...m, streaming: false } : m)),
+          );
         }
         setErrorEnvio(mensajeErrorUsuario(err));
       } finally {

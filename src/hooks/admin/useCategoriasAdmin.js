@@ -63,6 +63,7 @@ export function useReactivarCategoriaAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => categoriasAdminService.actualizarCategoria(id, { activo: true }),
+    meta: { toastMessage: 'Categoría reactivada' },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: categoriasAdminKeys.all });
       queryClient.invalidateQueries({ queryKey: ['admin', 'stats'] });

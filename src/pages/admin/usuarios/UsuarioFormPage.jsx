@@ -7,6 +7,7 @@ import { Select } from '../../../components/admin/ui/Select.jsx';
 import { Alert } from '../../../components/admin/ui/Alert.jsx';
 import { useUsuario, useCrearUsuario, useActualizarUsuario } from '../../../hooks/admin/useUsuarios.js';
 import { useRoles } from '../../../hooks/admin/useRoles.js';
+import { notificarErroresCliente } from '../../../utils/admin/notificarAdmin.js';
 
 const estadoInicial = {
   email: '',
@@ -62,7 +63,9 @@ export default function UsuarioFormPage() {
     if (!form.apellido) nuevosErrores.apellido = 'El apellido es obligatorio';
     if (!form.rolId) nuevosErrores.rolId = 'Seleccioná un rol';
     setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+    const valido = Object.keys(nuevosErrores).length === 0;
+    if (!valido) notificarErroresCliente(nuevosErrores);
+    return valido;
   };
 
   const enviar = async (e) => {

@@ -11,6 +11,7 @@ import {
   useActualizarProductoAdmin,
   useSubirImagenProductoAdmin,
 } from '../../../hooks/admin/useProductosAdmin.js';
+import { notificarErroresCliente } from '../../../utils/admin/notificarAdmin.js';
 import { useCategoriasAdmin } from '../../../hooks/admin/useCategoriasAdmin.js';
 import {
   UNIDADES_STOCK,
@@ -102,7 +103,9 @@ export default function ProductoFormPage() {
     if (!form.categoria.trim()) nuevosErrores.categoria = 'La categoría es obligatoria';
     Object.assign(nuevosErrores, validarComercial(form));
     setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
+    const valido = Object.keys(nuevosErrores).length === 0;
+    if (!valido) notificarErroresCliente(nuevosErrores);
+    return valido;
   };
 
   const enviar = async (e) => {

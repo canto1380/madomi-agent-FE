@@ -66,7 +66,7 @@ export function HeroSection() {
           </Reveal>
           <Reveal delay={280}>
             <div className="heroActions">
-              <Button href="#productos" variant="primary" className="btnGlow heroWhatsappPill">
+              <Button href="#productos" variant="primary" className="btnGlow heroCtaPrimary heroWhatsappPill">
                 {hero.ctaProductos}
               </Button>
               <a

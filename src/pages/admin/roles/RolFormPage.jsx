@@ -12,6 +12,7 @@ import {
   useSincronizarPermisosRol,
 } from '../../../hooks/admin/useRoles.js';
 import { usePermisos } from '../../../hooks/admin/usePermisos.js';
+import { notificarAdmin } from '../../../utils/admin/notificarAdmin.js';
 
 export default function RolFormPage() {
   const { id } = useParams();
@@ -41,7 +42,9 @@ export default function RolFormPage() {
     setErrorGeneral('');
 
     if (!nombre.trim()) {
-      setErrorGeneral('El nombre es obligatorio');
+      const mensaje = 'El nombre es obligatorio';
+      setErrorGeneral(mensaje);
+      notificarAdmin({ type: 'error', message: mensaje });
       return;
     }
 

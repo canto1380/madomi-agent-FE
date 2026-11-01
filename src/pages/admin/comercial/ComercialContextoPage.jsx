@@ -12,6 +12,7 @@ import {
 import { usePublicarContextoCrm } from '../../../hooks/admin/useCrmAdmin.js';
 import { usePermisosUsuario } from '../../../hooks/usePermisosUsuario.js';
 import { PERMISOS_COMERCIAL } from '../../../constants/permisosAdmin.js';
+import { leerMensajeApi } from '../../../utils/apiMessage.js';
 
 const TIPOS_CONTEXTO = [
   { value: 'politicas_entrega', label: 'Políticas de entrega' },
@@ -70,7 +71,12 @@ export default function ComercialContextoPage() {
       )}
       {publicarMutation.isError && <Alert variant="error">{publicarMutation.error.message}</Alert>}
       {publicarMutation.isSuccess && (
-        <Alert variant="success">Contexto publicado correctamente.</Alert>
+        <Alert variant={publicarMutation.data?.duplicado ? 'info' : 'success'}>
+          {leerMensajeApi(publicarMutation.data)
+            || (publicarMutation.data?.duplicado
+              ? 'Contexto ya vigente (mismo contenido)'
+              : 'Contexto publicado')}
+        </Alert>
       )}
 
       <div className="adminFilterBar adminFilterBar--inlineExtra">

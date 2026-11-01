@@ -53,8 +53,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   const logout = useCallback(async () => {
-    await authService.logout();
+    const data = await authService.logout();
     setUsuario(null);
+    return data;
   }, []);
 
   const value = useMemo(

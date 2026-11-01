@@ -1,4 +1,5 @@
 import { getAccessToken } from './api.js';
+import { asociarMensajeApi } from '../../utils/apiMessage.js';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -23,5 +24,5 @@ export async function subirImagenProducto(file, { productoId, previousUrl } = {}
     throw error;
   }
 
-  return body.data;
+  return asociarMensajeApi(body.data, body.message);
 }

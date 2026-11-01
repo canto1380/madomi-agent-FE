@@ -1,0 +1,21 @@
+:root {
+  --toastify-color-success: var(--color-exito, #16a34a);
+  --toastify-color-error: var(--color-error, #dc2626);
+  --toastify-color-info: var(--color-acento, #ca8a04);
+  --toastify-color-warning: var(--color-acento, #ca8a04);
+  --toastify-text-color-info: var(--color-fondo-oscuro, #1c1917);
+  --toastify-text-color-warning: var(--color-fondo-oscuro, #1c1917);
+  --toastify-font-family: inherit;
+  --toastify-z-index: 10000;
+  --toastify-toast-bd-radius: 8px;
+}
+
+.Toastify__toast {
+  font-size: 0.875rem;
+  box-shadow: 0 8px 24px rgba(28, 25, 23, 0.16);
+}
+
+.Toastify__toast-container {
+  width: min(22rem, calc(100vw - 1.5rem));
+  padding: 0.75rem;
+}

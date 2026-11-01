@@ -69,6 +69,7 @@ export function useReactivarContenidoAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => contenidoAdminService.actualizarContenido(id, { activo: true }),
+    meta: { toastMessage: 'Texto reactivado' },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: contenidoAdminKeys.all });
       queryClient.invalidateQueries({ queryKey: ['admin', 'stats'] });

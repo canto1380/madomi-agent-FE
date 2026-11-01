@@ -1,6 +1,8 @@
 import apiRequest from './api.js';
-
-const API_URL = import.meta.env.VITE_API_URL;
+import {
+  resolverChatStreamTimeoutMs,
+  urlApiChat,
+} from './chatApiBase.js';
 
 export async function obtenerEstadoChat() {
   try {
@@ -23,16 +25,17 @@ export async function enviarMensajeChat({ sessionAnonimaId, mensaje }) {
 
 function parseSseBuffer(buffer) {
   const events = [];
-  const blocks = buffer.split('\n\n');
+  const blocks = buffer.split(/\n\n/);
   for (const block of blocks) {
     if (!block.trim()) continue;
     let event = 'message';
     let dataLine = '';
-    for (const line of block.split('\n')) {
-      if (line.startsWith('event:')) {
-        event = line.slice(6).trim();
-      } else if (line.startsWith('data:')) {
-        dataLine += line.slice(5).trim();
+    for (const line of block.split(/\n/)) {
+      const trimmed = line.replace(/\r$/, '');
+      if (trimmed.startsWith('event:')) {
+        event = trimmed.slice(6).trim();
+      } else if (trimmed.startsWith('data:')) {
+        dataLine += trimmed.slice(5).trim();
       }
     }
     if (dataLine) {
@@ -46,17 +49,63 @@ function parseSseBuffer(buffer) {
   return events;
 }
 
+function crearSignalConTimeout(outerSignal, timeoutMs) {
+  let timeoutSignal = null;
+  if (typeof AbortSignal.timeout === 'function') {
+    timeoutSignal = AbortSignal.timeout(timeoutMs);
+  }
+  if (outerSignal && timeoutSignal) {
+    if (typeof AbortSignal.any === 'function') {
+      return AbortSignal.any([outerSignal, timeoutSignal]);
+    }
+    return timeoutSignal;
+  }
+  return timeoutSignal ?? outerSignal;
+}
+
+function esPayloadDoneValido(payload) {
+  return Boolean(payload && typeof payload === 'object' && typeof payload.respuesta === 'string');
+}
+
+function esErrorRecuperableChat(err) {
+  const msg = err?.message ?? '';
+  const name = err?.name ?? '';
+  return (
+    name === 'TimeoutError' ||
+    name === 'AbortError' ||
+    /incomplete|aborted|network|fetch|stream|terminated|body stream|failed to fetch|load failed/i.test(
+      msg,
+    )
+  );
+}
+
+async function aplicarRespuestaEnUi(data, { onDelta, onReplace }) {
+  const texto = data?.respuesta ?? '';
+  if (!texto) {
+    return data;
+  }
+  if (onReplace) {
+    onReplace(texto);
+  } else if (onDelta) {
+    onDelta(texto);
+  }
+  return data;
+}
+
 /**
- * Chat con SSE (spec §6.4). onDelta recibe fragmentos de texto; resuelve con payload `done`.
+ * Lee SSE de POST /api/chat. Si el stream falla, reintenta una vez en JSON (sin Accept SSE).
  */
-export async function enviarMensajeChatStream({
+async function leerChatSse({
   sessionAnonimaId,
   mensaje,
   onDelta,
   onReplace,
   signal,
 }) {
-  const res = await fetch(`${API_URL}/api/chat`, {
+  const timeoutMs = resolverChatStreamTimeoutMs();
+  const combinedSignal = crearSignalConTimeout(signal, timeoutMs);
+
+  const res = await fetch(urlApiChat('/api/chat'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -67,7 +116,7 @@ export async function enviarMensajeChatStream({
       mensaje,
       metadata: { canal: 'web_chat' },
     }),
-    signal,
+    signal: combinedSignal,
   });
 
   const contentType = res.headers.get('content-type') ?? '';
@@ -92,37 +141,7 @@ export async function enviarMensajeChatStream({
   let buffer = '';
   let donePayload = null;
 
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buffer += decoder.decode(value, { stream: true });
-
-    const parts = buffer.split('\n\n');
-    buffer = parts.pop() ?? '';
-
-    for (const part of parts) {
-      const events = parseSseBuffer(`${part}\n\n`);
-      for (const { event, data } of events) {
-        if (event === 'delta' && data?.text && onDelta) {
-          onDelta(data.text);
-        }
-        if (event === 'replace' && data?.text && onReplace) {
-          onReplace(data.text);
-        }
-        if (event === 'done') {
-          donePayload = data;
-        }
-        if (event === 'error') {
-          const error = new Error(data?.message ?? 'Error en el asistente');
-          error.code = data?.code;
-          throw error;
-        }
-      }
-    }
-  }
-
-  if (buffer.trim()) {
-    const events = parseSseBuffer(`${buffer}\n\n`);
+  const procesarEventos = (events) => {
     for (const { event, data } of events) {
       if (event === 'delta' && data?.text && onDelta) {
         onDelta(data.text);
@@ -130,7 +149,7 @@ export async function enviarMensajeChatStream({
       if (event === 'replace' && data?.text && onReplace) {
         onReplace(data.text);
       }
-      if (event === 'done') {
+      if (event === 'done' && esPayloadDoneValido(data)) {
         donePayload = data;
       }
       if (event === 'error') {
@@ -139,11 +158,45 @@ export async function enviarMensajeChatStream({
         throw error;
       }
     }
+  };
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buffer += decoder.decode(value, { stream: true });
+
+    const parts = buffer.split(/\n\n/);
+    buffer = parts.pop() ?? '';
+
+    for (const part of parts) {
+      if (!part.trim()) continue;
+      procesarEventos(parseSseBuffer(`${part}\n\n`));
+    }
   }
 
-  if (!donePayload) {
+  if (buffer.trim()) {
+    procesarEventos(parseSseBuffer(`${buffer}\n\n`));
+  }
+
+  if (!esPayloadDoneValido(donePayload)) {
     throw new Error('Respuesta incompleta del asistente');
   }
 
   return donePayload;
+}
+
+export async function enviarMensajeChatStream(params) {
+  try {
+    return await leerChatSse(params);
+  } catch (err) {
+    if (!esErrorRecuperableChat(err)) {
+      throw err;
+    }
+    const data = await enviarMensajeChat({
+      sessionAnonimaId: params.sessionAnonimaId,
+      mensaje: params.mensaje,
+    });
+    await aplicarRespuestaEnUi(data, params);
+    return data;
+  }
 }

@@ -21,7 +21,7 @@ export async function login(payload) {
 export async function logout() {
   const refreshToken = getRefreshToken();
   try {
-    await apiRequest(
+    return await apiRequest(
       '/api/auth/logout',
       {
         method: 'POST',

@@ -1,7 +1,7 @@
-const API_URL = import.meta.env.VITE_API_URL;
+import { urlApiChat } from './chatApiBase.js';
 
 export async function apiRequest(path, options = {}) {
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(urlApiChat(path), {
     ...options,
     headers: {
       'Content-Type': 'application/json',

@@ -47,7 +47,7 @@ function getSceneProfile(viewportWidth) {
       tier: 'mobile',
       logoScale: 0.76,
       logoWidth: 3.6,
-      logoPosition: [0, 2.25, 0],
+      logoPosition: [0, 2.85, 0],
       sparkleCount: 20,
       shapeCount: 4,
       geometryDetail: 'low',

@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useChatWidget } from '../../../hooks/useChatWidget.js';
+import { useSiteContenido } from '../../../providers/SiteContenidoProvider.jsx';
 import { ChatMessageList } from './ChatMessageList.jsx';
 import { ChatComposer } from './ChatComposer.jsx';
 
@@ -23,6 +24,7 @@ function mensajeNoDisponible(codigo) {
 
 export function ChatWidget() {
   const habilitado = import.meta.env.VITE_ENABLE_CHAT_WIDGET !== 'false';
+  const { site } = useSiteContenido();
   const {
     abierto,
     toggle,
@@ -91,6 +93,12 @@ export function ChatWidget() {
                   {errorEnvio}
                 </p>
               )}
+              <p className="chatPanelWhatsappNote">
+                ¿Preferís hablar con alguien?{' '}
+                <a href={site.contacto.whatsapp} target="_blank" rel="noreferrer">
+                  WhatsApp
+                </a>
+              </p>
               <ChatComposer onEnviar={enviar} disabled={enviando} />
             </>
           )}

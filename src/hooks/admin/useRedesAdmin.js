@@ -66,6 +66,7 @@ export function useReactivarRedAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => redesAdminService.actualizarRed(id, { activo: true }),
+    meta: { toastMessage: 'Red social reactivada' },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: redesAdminKeys.all });
       queryClient.invalidateQueries({ queryKey: ['admin', 'stats'] });

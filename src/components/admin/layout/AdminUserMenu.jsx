@@ -1,13 +1,27 @@
 import { useNavigate } from 'react-router-dom';
 import { AdminIconButton } from '../ui/AdminIconButton.jsx';
 import { getAdminUserDisplayName, getAdminUserInitials } from './adminUserUtils.js';
+import { leerMensajeApi } from '../../../utils/apiMessage.js';
+import { notificarAdmin } from '../../../utils/admin/notificarAdmin.js';
 
 export function AdminUserMenu({ usuario, onLogout, compact = false }) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await onLogout();
-    navigate('/login', { replace: true });
+    try {
+      const data = await onLogout();
+      notificarAdmin({
+        type: 'success',
+        message: leerMensajeApi(data) || 'Sesión cerrada',
+      });
+    } catch (err) {
+      notificarAdmin({
+        type: 'error',
+        message: err.message || 'No se pudo cerrar la sesión',
+      });
+    } finally {
+      navigate('/login', { replace: true });
+    }
   };
 
   const displayName = getAdminUserDisplayName(usuario);

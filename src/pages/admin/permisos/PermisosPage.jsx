@@ -111,8 +111,8 @@ export default function PermisosPage() {
     try {
       await eliminarMutation.mutateAsync(permisoEliminar.id);
       setPermisoEliminar(null);
-    } catch (err) {
-      alert(err.message);
+    } catch {
+      // El toast global muestra el error y el diálogo queda abierto.
     }
   };
 

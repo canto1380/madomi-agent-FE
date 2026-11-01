@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import { useSiteContenido } from '../../../providers/SiteContenidoProvider.jsx';
 
 function etiquetaAccion(accion) {
   if (accion.tipo === 'solicitar_dato' && accion.campo === 'telefono') {
@@ -13,7 +12,6 @@ function etiquetaAccion(accion) {
 
 export function ChatMessageList({ mensajes, enviando }) {
   const endRef = useRef(null);
-  const { site } = useSiteContenido();
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -75,12 +73,6 @@ export function ChatMessageList({ mensajes, enviando }) {
       )}
 
       <div ref={endRef} />
-      <p className="chatMessageFooterNote">
-        ¿Preferís hablar con alguien?{' '}
-        <a href={site.contacto.whatsapp} target="_blank" rel="noreferrer">
-          WhatsApp
-        </a>
-      </p>
     </div>
   );
 }

@@ -67,6 +67,7 @@ export function useReactivarProductoAdmin() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => productosAdminService.actualizarProducto(id, { activo: true }),
+    meta: { toastMessage: 'Producto reactivado' },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: productosAdminKeys.all });
       queryClient.invalidateQueries({ queryKey: ['admin', 'stats'] });
